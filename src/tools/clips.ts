@@ -86,15 +86,26 @@ export function registerClipTools(server: McpServer, osc: AbletonOSC) {
       const [length] = await osc.query("/live/clip/get/length", trackIndex, clipIndex);
       const [isLooping] = await osc.query("/live/clip/get/looping", trackIndex, clipIndex);
       const [isPlaying] = await osc.query("/live/clip/get/is_playing", trackIndex, clipIndex);
+      const [isAudio] = await osc.query("/live/clip/get/is_audio_clip", trackIndex, clipIndex);
 
-      const info = {
+      const info: Record<string, unknown> = {
         trackIndex,
         clipIndex,
         name,
         length,
         looping: !!isLooping,
         playing: !!isPlaying,
+        isAudio: !!isAudio,
       };
+
+      if (isAudio) {
+        try {
+          const [filePath] = await osc.query("/live/clip/get/file_path", trackIndex, clipIndex);
+          if (filePath) info.filePath = filePath;
+        } catch {
+          // file_path may not be available for all audio clips
+        }
+      }
 
       return { content: [{ type: "text", text: JSON.stringify(info, null, 2) }] };
     },

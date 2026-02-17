@@ -8,6 +8,7 @@ import { registerTrackTools } from "./tools/tracks.js";
 import { registerMixerTools } from "./tools/mixer.js";
 import { registerClipTools } from "./tools/clips.js";
 import { registerDeviceTools } from "./tools/devices.js";
+import { registerAnalysisTools } from "./tools/analysis.js";
 import { registerSessionResource } from "./resources/session.js";
 import { registerTrackResources } from "./resources/tracks.js";
 
@@ -24,6 +25,7 @@ async function main() {
   registerMixerTools(server, osc);
   registerClipTools(server, osc);
   registerDeviceTools(server, osc);
+  registerAnalysisTools(server, osc);
   registerSessionResource(server, osc);
   registerTrackResources(server, osc);
 
